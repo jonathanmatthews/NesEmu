@@ -8,9 +8,10 @@ namespace NesEmu.Emulation
         private readonly Registers _registers;
         private readonly byte[] _memory = new byte[0xffff];
 
-        public Interpreter(InstructionCollection instructionCollection)
+        public Interpreter(InstructionCollection instructionCollection, Registers registers)
         {
-            _instructions = instructionCollection ?? throw new ArgumentNullException(nameof(instructionCollection));
+            _instructions = instructionCollection;
+            _registers = registers;
         }
 
         public void LoadProgram(byte[] program)
@@ -25,7 +26,7 @@ namespace NesEmu.Emulation
             }
         }
 
-        public byte DecodeAndExecute(byte opcode)
+        public void DecodeAndExecute(byte opcode)
         {
             switch (opcode)
             {
@@ -34,7 +35,6 @@ namespace NesEmu.Emulation
                 default:
                     throw new NotImplementedException("Instruction not yet implemented");
             }
-
         }
     }
 }
