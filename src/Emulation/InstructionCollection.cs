@@ -4,11 +4,13 @@ namespace NesEmu.Emulation
 {
     public class InstructionCollection
     {
-        private Registers _registers;
+        private readonly Registers _registers;
+        private readonly NesMemory _memory;
 
-        public InstructionCollection(Registers registers)
+        public InstructionCollection(Registers registers, NesMemory memory)
         {
             _registers = registers;
+            _memory = memory;
         }
     }
 }
