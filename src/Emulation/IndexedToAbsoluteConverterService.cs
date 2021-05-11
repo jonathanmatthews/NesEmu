@@ -22,10 +22,10 @@ namespace NesEmu.Emulation
             => (ushort)(_registers.IndexY + baseAddressInsignificant + (baseAddressSignificant << 8));
 
         public ushort ZeroPagedIndexedX(byte baseAddress)
-            => (byte)(_registers.IndexX + baseAddress); // Modulo 0xFF
+            => (byte)(_registers.IndexX + baseAddress); // Modulo 0x100
         
         public ushort ZeroPagedIndexedY(byte baseAddress)
-            => (byte)(_registers.IndexY + baseAddress); // Modulo 0xFF
+            => (byte)(_registers.IndexY + baseAddress); // Modulo 0x100
 
         public ushort IndexedIndirectX(byte baseAddress)
         {
