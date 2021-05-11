@@ -12,7 +12,8 @@ namespace NesEmu.Emulation
             set => _memory[pointer] = value;
         }
 
-        public byte GetStackValue(byte stackAddress) => _memory[0x0100 + stackAddress];
+        public byte GetStackValue(byte stackAddress)
+            => _memory[0x0100 + stackAddress];
 
         public void SetStackValue(byte stackAddress, byte value)
             => _memory[0x0100 + stackAddress] = value;
