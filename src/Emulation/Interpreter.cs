@@ -7,13 +7,18 @@ namespace NesEmu.Emulation
         private readonly InstructionCollection _instructions;
         private readonly Registers _registers;
         private readonly NesMemory _memory;
+        private readonly IndexedToAbsoluteConverterService _addressConverter;
 
-        public Interpreter(InstructionCollection instructionCollection,
-            Registers registers, NesMemory memory)
+        public Interpreter(
+            InstructionCollection instructionCollection,
+            Registers registers,
+            NesMemory memory,
+            IndexedToAbsoluteConverterService addressConverter)
         {
             _instructions = instructionCollection;
             _registers = registers;
             _memory = memory;
+            _addressConverter = addressConverter;
         }
 
         public void DecodeAndExecute(byte opcode)
@@ -23,7 +28,7 @@ namespace NesEmu.Emulation
                 case 0x00:
                 case 0x01:
                 default:
-                    throw new NotImplementedException("Instruction not yet implemented");
+                    throw new NotImplementedException($"Instruction 0x{opcode.ToString("X2")} not implemented.");
             }
         }
     }
