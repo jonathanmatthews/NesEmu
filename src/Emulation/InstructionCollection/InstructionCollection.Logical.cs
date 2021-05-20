@@ -76,5 +76,33 @@ namespace NesEmu.Emulation
             _registers.Negative = data > 127;
             _registers.Overflow = (data & 0b01000000) > 0;
         }
+
+        /// <summary>
+        /// Add with carry the accumulator and the memory at address, store result in accumulator
+        /// </summary>
+        public void ADC(ushort operandAddress)
+        {
+            var result = _registers.Accumulator + _memory[operandAddress];
+
+            _registers.Carry = result > 255;
+            _registers.Overflow = (result & 0b10000000) != (_registers.Accumulator & 0b10000000);
+            _registers.Accumulator = (byte)result;
+            _registers.Negative = _registers.Accumulator > 127;
+            _registers.Zero = _registers.Accumulator == 0;
+        }
+
+        /// <summary>
+        /// Add with carry the accumulator and data given explicitly, store result in accumulator
+        /// </summary>
+        public void ADC(byte data)
+        {
+            var result = _registers.Accumulator + data;
+
+            _registers.Carry = result > 255;
+            _registers.Overflow = (result & 0b10000000) != (_registers.Accumulator & 0b10000000);
+            _registers.Accumulator = (byte)result;
+            _registers.Negative = _registers.Accumulator > 127;
+            _registers.Zero = _registers.Accumulator == 0;
+        }
     }
 }

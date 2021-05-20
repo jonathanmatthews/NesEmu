@@ -77,6 +77,21 @@ namespace NesEmu.Emulation
         }
 
         /// <summary>
+        /// Branch on overflow clear
+        /// </summary>
+        public ushort BVC(byte relativeAddress)
+        {
+            if (!_registers.Overflow)
+            {
+                var PC = (ushort)(_registers.ProgramCounter + relativeAddress);
+                if (relativeAddress > 127) PC -= 256;
+                return PC;
+            }
+            else
+                return (ushort)(_registers.ProgramCounter + 2);
+        }
+
+        /// <summary>
         /// Clear carry flag
         /// </summary>
         public void CLC()
@@ -90,6 +105,14 @@ namespace NesEmu.Emulation
         public void SEC()
         {
             _registers.Carry = true;
+        }
+
+        /// <summary>
+        /// Clear the interrupt disable flag
+        /// </summary>
+        public void CLI()
+        {
+            _registers.InterruptDisable = false;
         }
 
         /// <summary>
