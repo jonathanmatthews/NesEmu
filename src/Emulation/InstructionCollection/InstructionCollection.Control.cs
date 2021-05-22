@@ -13,40 +13,6 @@ namespace NesEmu.Emulation
         }
 
         /// <summary>
-        /// Push processor status onto stack
-        /// </summary>
-        public void PHP()
-        {
-            _memory.PushStatusToStack(false);
-        }
-
-        /// <summary>
-        /// Pull processor status from stack
-        /// </summary>
-        public void PLP()
-        {
-            _memory.PopStatusFromStack();
-        }
-
-        /// <summary>
-        /// Push accumulator to stack
-        /// </summary>
-        public void PHA()
-        {
-            _memory.PushStack(_registers.Accumulator);
-        }
-
-        /// <summary>
-        /// Pull accumulator from stack
-        /// </summary>
-        public void PLA()
-        {
-            _registers.Accumulator = _memory.PopStack();
-            _registers.Negative = _registers.Accumulator > 127;
-            _registers.Zero = _registers.Accumulator == 0;
-        }
-
-        /// <summary>
         /// Branch on plus, returns new PC value
         /// </summary>
         public ushort BPL(byte relativeAddress)
@@ -92,6 +58,51 @@ namespace NesEmu.Emulation
         }
 
         /// <summary>
+        /// Branch on overflow set
+        /// </summary>
+        public ushort BVS(byte relativeAddress)
+        {
+            if (_registers.Overflow)
+            {
+                var PC = (ushort)(_registers.ProgramCounter + relativeAddress);
+                if (relativeAddress > 127) PC -= 256;
+                return PC;
+            }
+            else
+                return (ushort)(_registers.ProgramCounter + 2);
+        }
+
+        /// <summary>
+        /// Branch on carry clear
+        /// </summary>
+        public ushort BCC(byte relativeAddress)
+        {
+            if (!_registers.Carry)
+            {
+                var PC = (ushort)(_registers.ProgramCounter + relativeAddress);
+                if (relativeAddress > 127) PC -= 256;
+                return PC;
+            }
+            else
+                return (ushort)(_registers.ProgramCounter + 2);
+        }
+
+        /// <summary>
+        /// Branch on carry set
+        /// </summary>
+        public ushort BCS(byte relativeAddress)
+        {
+            if (_registers.Carry)
+            {
+                var PC = (ushort)(_registers.ProgramCounter + relativeAddress);
+                if (relativeAddress > 127) PC -= 256;
+                return PC;
+            }
+            else
+                return (ushort)(_registers.ProgramCounter + 2);
+        }
+
+        /// <summary>
         /// Clear carry flag
         /// </summary>
         public void CLC()
@@ -113,6 +124,24 @@ namespace NesEmu.Emulation
         public void CLI()
         {
             _registers.InterruptDisable = false;
+        }
+
+        /// <summary>
+        /// Set the interrupt disable flag
+        /// </summary>
+        public void SEI()
+        {
+            _registers.InterruptDisable = true;
+        }
+
+        /// <summary>
+        /// Jump to absolute or indirect address, returns new program counter
+        /// </summary>
+        public ushort JMP(ushort address, bool isIndirectAddress)
+        {
+            return isIndirectAddress ?
+                (ushort)(_memory[address] + (_memory[(ushort)(address + 1)] << 8)) :
+                address;
         }
 
         /// <summary>
