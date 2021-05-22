@@ -104,5 +104,80 @@ namespace NesEmu.Emulation
             _registers.Negative = _registers.Accumulator > 127;
             _registers.Zero = _registers.Accumulator == 0;
         }
+
+        /// <summary>
+        /// Compare accumulator with data at address
+        /// </summary>
+        public void CMP(ushort operandAddress)
+        {
+            var data = _memory[operandAddress];
+            var result = _registers.Accumulator - data;
+
+            _registers.Negative = result > 127;
+            _registers.Zero = result == 0;
+            _registers.Carry = data <= _registers.Accumulator;
+        }
+
+        /// <summary>
+        /// Compare accumulator with data given explicitly
+        /// </summary>
+        public void CMP(byte data)
+        {
+            var result = _registers.Accumulator - data;
+
+            _registers.Negative = result > 127;
+            _registers.Zero = result == 0;
+            _registers.Carry = data <= _registers.Accumulator;
+        }
+
+        /// <summary>
+        /// Compare Y with data at address
+        /// </summary>
+        public void CPY(ushort operandAddress)
+        {
+            var data = _memory[operandAddress];
+            var result = _registers.IndexY - data;
+
+            _registers.Negative = result > 127;
+            _registers.Zero = result == 0;
+            _registers.Carry = data <= _registers.IndexY;
+        }
+        
+        /// <summary>
+        /// Compare Y with data given explicitly
+        /// </summary>
+        public void CPY(byte data)
+        {
+            var result = _registers.IndexY - data;
+
+            _registers.Negative = result > 127;
+            _registers.Zero = result == 0;
+            _registers.Carry = data <= _registers.IndexY;
+        }
+        
+        /// <summary>
+        /// Compare X with data at address
+        /// </summary>
+        public void CPX(ushort operandAddress)
+        {
+            var data = _memory[operandAddress];
+            var result = _registers.IndexX - data;
+
+            _registers.Negative = result > 127;
+            _registers.Zero = result == 0;
+            _registers.Carry = data <= _registers.IndexX;
+        }
+        
+        /// <summary>
+        /// Compare X with data given explicitly
+        /// </summary>
+        public void CPX(byte data)
+        {
+            var result = _registers.IndexX - data;
+
+            _registers.Negative = result > 127;
+            _registers.Zero = result == 0;
+            _registers.Carry = data <= _registers.IndexX;
+        }
     }
 }

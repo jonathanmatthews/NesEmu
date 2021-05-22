@@ -39,6 +39,24 @@ namespace NesEmu.Emulation
         }
 
         /// <summary>
+        /// Transfer X to stack pointer
+        /// </summary>
+        public void TXS()
+        {
+            _registers.StackPointer = _registers.IndexX;
+        }
+
+        /// <summary>
+        /// Transfer stack pointer to X
+        /// </summary>
+        public void TSX()
+        {
+            _registers.IndexX = _registers.StackPointer;
+            _registers.Negative = _registers.StackPointer > 127;
+            _registers.Zero = _registers.StackPointer == 0;
+        }
+
+        /// <summary>
         /// Store the accumulator at the address given
         /// </summary>
         public void STA(ushort absoluteAddress)

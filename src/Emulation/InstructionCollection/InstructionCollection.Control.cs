@@ -119,6 +119,14 @@ namespace NesEmu.Emulation
         }
 
         /// <summary>
+        /// Clear the overflow flag
+        /// </summary>
+        public void CLV()
+        {
+            _registers.Overflow = false;
+        }
+
+        /// <summary>
         /// Clear the interrupt disable flag
         /// </summary>
         public void CLI()
